@@ -1,5 +1,8 @@
 pipeline {
 	agent any
+	tools {
+        maven 'Maven 3.8.6'
+	}
     
 	 stages {
 		stage('git checkout'){
@@ -9,8 +12,6 @@ pipeline {
 		}
 		 stage('Unit testing'){
 		     steps {
-			    sh 'echo $M2_HOME'
-			    sh 'echo $PATH'
 			    sh 'mvn test'
 			   }
 		}
