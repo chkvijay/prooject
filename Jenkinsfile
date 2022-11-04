@@ -9,6 +9,8 @@ pipeline {
 		}
 		 stage('Unit testing'){
 		     steps {
+			    sh 'echo $M2_HOME'
+			    sh 'echo $PATH'
 			    sh 'mvn test'
 			   }
 		}
