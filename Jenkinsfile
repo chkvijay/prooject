@@ -39,5 +39,33 @@ pipeline {
 			          }
 			   }
 		   }
+		 
+		 stage('artifact upload to nexus repository'){
+		    steps {
+		        script {
+		         def readPomVersion = readMavenPom file : 'pom.xml'
+		         
+		         def nexusrepo = readPomVersion.version.endsWith("SNAPSHOT") ? "demo-snapshot" : "demoapp-release"
+				
+		nexusArtifactUploader artifacts: 
+                [
+                 [ 
+                    artifactId: 'maven-project', 
+                    classifier: '', 
+                    file: 'webapp/target/webapp.war', 
+                    type: 'war'
+                 ]
+                ],
+                credentialsId: 'nexus-auth', 
+                groupId: 'com.example', 
+                nexusUrl: 'localhost:8085', 
+                nexusVersion: 'nexus3', 
+                protocol: 'http', 
+                repository: nexusrepo, 
+                version: "${readPomVersion.version}"
+		       }
+		    }
+		    
+		}
 }
 }
